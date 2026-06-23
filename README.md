@@ -1,16 +1,11 @@
 # ssh_menu
 
-A single-file, dependency-light **quick-pick SSH menu** for the terminal. It
-remembers what you connect to, floats your favorites and recent hosts to the
-top, and (on WSL) opens each connection in its own colored Windows Terminal
-tab. No daemon, no config language — just one bash script and a flat text file.
-
-![ssh_menu demo](demo/demo.gif)
-
-*A real recording of `ssh_menu` in WSL: arrow-key navigation with the preview
-pane following each host, then live fuzzy filtering. (The colored Windows
-Terminal tab that opens on connect is a Windows GUI element a terminal
-recording can't capture — see the tab-color screenshot below.)*
+Tired of hunting down the right hostname or IP across spreadsheets, wiki
+pages, sticky notes, and a sprawling `~/.ssh/config` every time you need to
+connect? **`ssh_menu` puts every box you use in one fast, searchable menu.**
+Fuzzy-search by name, your favorites and most-recently-used hosts float to the
+top, and a single keypress connects — on WSL, in its own color-coded Windows
+Terminal tab. One bash script, one plain text file, no daemon.
 
 ### Features at a glance
 
@@ -20,17 +15,19 @@ recording can't capture — see the tab-color screenshot below.)*
 | **Type to filter** — the list narrows instantly and the preview follows the highlight. | ![filter + preview](demo/02-filter-preview.png) |
 | **No-`fzf` fallback** — a clean numbered menu grouped by site, no extra tools required. | ![numeric menu](demo/03-numeric-menu.png) |
 | **Production guard** — any `PROD` host makes you type `YES` before it connects. | ![prod guard](demo/04-prod-guard.png) |
-| **Severity-colored tabs** — on WSL each environment opens its own Windows Terminal tab, tinted so the color signals severity at a glance (dev → prod = routine → danger). | ![tab severity](demo/05-tab-severity.png) |
 
-> **Want it to look exactly like the GIF and screenshots above?** They were
-> produced with **`fzf` installed** and the bundled, fully-fake
-> [`ssh_menu.conf.example`](ssh_menu.conf.example). To reproduce:
-> 1. Install **`fzf`** — that's what gives you the fuzzy UI in the GIF and
->    shots 1–2. Without it you get the numbered menu in shot 3.
-> 2. Run `./install.sh` (it seeds `~/.ssh_menu.conf` from the example), then
->    `ssh_menu`.
+> Shots 1–2 are real `fzf` frames captured in WSL; shots 3–4 are real output
+> of the script's numeric mode. All use the bundled, fully-fake
+> [`ssh_menu.conf.example`](ssh_menu.conf.example) — no real hosts. To get the
+> same fuzzy UI, install **`fzf`** and run `./install.sh` (it seeds
+> `~/.ssh_menu.conf` from the example), then `ssh_menu`. Without `fzf` you get
+> the numbered menu in shot 3. See [Requirements](#requirements) for the
+> one-line install per platform.
 >
-> See [Requirements](#requirements) for the one-line install per platform.
+> On WSL, connecting opens a Windows Terminal tab color-coded by environment
+> (dev green → qa amber → staging blue → prod red). That tab bar is a Windows
+> GUI element, so it isn't shown here — but you'll see it the moment you
+> connect.
 
 ---
 
