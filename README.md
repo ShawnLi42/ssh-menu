@@ -22,6 +22,7 @@ it isn't in the recording, but you'll see it the moment you connect.*
 | **Type to filter** — the list narrows instantly and the preview follows the highlight. | ![filter + preview](demo/02-filter-preview.png) |
 | **No-`fzf` fallback** — a clean numbered menu grouped by site, no extra tools required. | ![numeric menu](demo/03-numeric-menu.png) |
 | **Production guard** — any `PROD` host makes you type `YES` before it connects. | ![prod guard](demo/04-prod-guard.png) |
+| **Color-coded tabs** — on WSL, connecting opens a Windows Terminal tab tinted by environment (via `wt --tabColor`), so severity reads at a glance. These are the actual colors the tool assigns: | ![tab colors](demo/05-tab-colors.png) |
 
 > Shots 1–2 are real `fzf` frames captured in WSL; shots 3–4 are real output
 > of the script's numeric mode. All use the bundled, fully-fake
