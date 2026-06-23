@@ -1,8 +1,12 @@
 # demo/
 
-Drop a recorded `demo.cast` / `demo.gif` here.
+Media used in the main [README](../README.md):
 
-Generate it from the sanitized example config (no real hosts appear) — see
-[Recording the demo](../README.md#recording-the-demo) in the main README.
-Once `demo.gif` exists, swap the static preview block at the top of the README
-for `![demo](demo/demo.gif)`.
+- `demo.gif` — animated search → connect walkthrough
+- `01-fuzzy-menu.png` — the fuzzy menu (favorites, recent, tags, preview)
+- `02-filter-preview.png` — live filtering with the preview pane
+- `03-numeric-menu.png` — the no-`fzf` numbered fallback, grouped by site
+- `04-prod-guard.png` — the `PROD` confirmation guard
+
+All were generated from the fake [`ssh_menu.conf.example`](../ssh_menu.conf.example),
+so no real hosts appear.

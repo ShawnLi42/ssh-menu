@@ -5,26 +5,26 @@ remembers what you connect to, floats your favorites and recent hosts to the
 top, and (on WSL) opens each connection in its own colored Windows Terminal
 tab. No daemon, no config language — just one bash script and a flat text file.
 
-```text
-SSH >                          filter / f=toggle fav / ^O=open dashboard / Enter=ssh / Esc=exit
-  * DEV web1                             [dev]        3m ago
-  ~ QA api                               [qa]         2h ago
-  * DEV api                              [dev]
-  * PROD gateway                         [PROD]
-    DEV db                               [dev]
-    QA web1                              [qa]
-    STG gateway                          [staging]
-  ──────────────────────────────────────────────────────────────
-    DEV web1
-      host:        deploy@web1.dev.example.com   port: 22
-      dashboard:   https://navigator.example.com/dev/
-      status:      * favorite        last used: 3m ago   times: 1
-      site/tab:    DEV / #00CC44
-```
+![ssh_menu demo](demo/demo.gif)
 
-> Static preview above (rendered in real color, with a fuzzy filter, when you
-> run it). To drop in an animated version, record one from the sanitized
-> example config — see [Recording the demo](#recording-the-demo).
+### Features at a glance
+
+| Feature | |
+|---|---|
+| **Fuzzy menu** — favorites (`*`), recently used (`~`), colored env tags, "time ago", and a live preview pane for the highlighted host. | ![fuzzy menu](demo/01-fuzzy-menu.png) |
+| **Type to filter** — the list narrows instantly and the preview follows the highlight. | ![filter + preview](demo/02-filter-preview.png) |
+| **No-`fzf` fallback** — a clean numbered menu grouped by site, no extra tools required. | ![numeric menu](demo/03-numeric-menu.png) |
+| **Production guard** — any `PROD` host makes you type `YES` before it connects. | ![prod guard](demo/04-prod-guard.png) |
+
+> **Want it to look exactly like the GIF and screenshots above?** They were
+> produced with **`fzf` installed** and the bundled, fully-fake
+> [`ssh_menu.conf.example`](ssh_menu.conf.example). To reproduce:
+> 1. Install **`fzf`** — that's what gives you the fuzzy UI in the GIF and
+>    shots 1–2. Without it you get the numbered menu in shot 3.
+> 2. Run `./install.sh` (it seeds `~/.ssh_menu.conf` from the example), then
+>    `ssh_menu`.
+>
+> See [Requirements](#requirements) for the one-line install per platform.
 
 ---
 
@@ -168,26 +168,6 @@ sessions back-to-back; `Esc` leaves.
   key-binds and preview window can call the same code that renders the menu.
 - Neither file is committed — both are in `.gitignore` — so your real hosts
   never end up in version control.
-
----
-
-## Recording the demo
-
-The GIF is generated from the sanitized example config so no real hosts
-appear. Requires [`asciinema`](https://asciinema.org) and
-[`agg`](https://github.com/asciinema/agg):
-
-```bash
-# 1. Point ssh_menu at the example config (won't touch your real one)
-export SSH_MENU_CONF="$PWD/ssh_menu.conf.example"
-export SSH_MENU_HISTORY="$(mktemp)"
-
-# 2. Record a short session: filter, toggle a favorite, preview, Esc to exit
-asciinema rec demo/demo.cast --cols 90 --rows 24 --overwrite
-
-# 3. Render to GIF
-agg demo/demo.cast demo/demo.gif
-```
 
 ---
 
