@@ -2,7 +2,7 @@
 
 Media used in the main [README](../README.md):
 
-- `demo.gif` — arrow-key navigation (preview follows) → guarded `PROD` connect
+- `demo.gif` — real WSL recording: arrow-key navigation (preview follows) + live filtering
 - `01-fuzzy-menu.png` — the fuzzy menu (favorites, recent, tags, preview)
 - `02-filter-preview.png` — live filtering with the preview pane
 - `03-numeric-menu.png` — the no-`fzf` numbered fallback, grouped by site

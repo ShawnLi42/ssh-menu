@@ -7,9 +7,10 @@ tab. No daemon, no config language — just one bash script and a flat text file
 
 ![ssh_menu demo](demo/demo.gif)
 
-*Move the selection with `↑`/`↓` (the preview pane follows each host), then
-connect — here to a `PROD` host, which asks for `YES` and opens a red,
-severity-colored tab.*
+*Real recording of `ssh_menu` in WSL: move the selection with `↑`/`↓` (the
+preview pane follows each host) and type to filter live. Connecting opens a
+Windows Terminal tab colored by environment — see the
+[tab-color screenshot](#features-at-a-glance) below.*
 
 ### Features at a glance
 
