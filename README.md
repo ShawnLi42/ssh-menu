@@ -7,6 +7,13 @@ Fuzzy-search by name, your favorites and most-recently-used hosts float to the
 top, and a single keypress connects — on WSL, in its own color-coded Windows
 Terminal tab. One bash script, one plain text file, no daemon.
 
+![ssh_menu demo](demo/demo.gif)
+
+*Real recording in WSL: arrow through hosts (the preview pane follows each
+one), press `f` to star a host live, then type to filter. Connecting opens a
+color-coded Windows Terminal tab — that tab bar is a Windows GUI element, so
+it isn't in the recording, but you'll see it the moment you connect.*
+
 ### Features at a glance
 
 | Feature | |
