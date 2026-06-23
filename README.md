@@ -7,11 +7,10 @@ tab. No daemon, no config language — just one bash script and a flat text file
 
 ![ssh_menu demo](demo/demo.gif)
 
-*The menu portion is a **real recording** of `ssh_menu` in WSL — arrow-key
-navigation (the preview pane follows each host) and live filtering — then
-connecting opens a Windows Terminal tab colored by environment. The closing
-tab-bar panel is illustrated, because a terminal recording can't capture the
-Windows GUI tab strip itself.*
+*A real recording of `ssh_menu` in WSL: arrow-key navigation with the preview
+pane following each host, then live fuzzy filtering. (The colored Windows
+Terminal tab that opens on connect is a Windows GUI element a terminal
+recording can't capture — see the tab-color screenshot below.)*
 
 ### Features at a glance
 
