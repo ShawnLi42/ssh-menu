@@ -1,0 +1,7 @@
+# Local user state — never commit real hosts or connection history.
+.ssh_menu.conf
+.ssh_menu.history
+
+# Recording scratch
+*.cast
+!demo/*.cast

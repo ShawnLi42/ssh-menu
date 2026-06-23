@@ -1,0 +1,24 @@
+# ssh_menu config — copy to ~/.ssh_menu.conf and edit for your hosts.
+#
+# Format:   [* ]Name:user@host:port
+#   - Name's FIRST word is the "site" (DEV / QA / STG / PROD here) and drives
+#     the colored tag, group color, terminal-tab color, and dashboard URL.
+#     Add your own sites by editing the case statements in ssh_menu.sh.
+#   - A leading '* ' marks the entry as a favorite (shown first, daily picks).
+#   - Lines starting with '#' and blank lines are ignored.
+#   - PROD entries require typing YES before connecting.
+
+# ── DEV ──────────────────────────────────────────────────────────────────
+* DEV web1:deploy@web1.dev.example.com:22
+* DEV api:deploy@api.dev.example.com:22
+DEV db:deploy@db.dev.example.com:22
+
+# ── QA ───────────────────────────────────────────────────────────────────
+QA web1:qa@web1.qa.example.com:22
+QA api:qa@api.qa.example.com:22
+
+# ── STG ──────────────────────────────────────────────────────────────────
+STG gateway:ops@gateway.stg.example.com:2222
+
+# ── PROD (guarded — asks for YES) ────────────────────────────────────────
+* PROD gateway:ops@gateway.prod.example.com:2222
