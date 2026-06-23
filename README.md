@@ -7,14 +7,19 @@ tab. No daemon, no config language — just one bash script and a flat text file
 
 ![ssh_menu demo](demo/demo.gif)
 
+*Move the selection with `↑`/`↓` (the preview pane follows each host), then
+connect — here to a `PROD` host, which asks for `YES` and opens a red,
+severity-colored tab.*
+
 ### Features at a glance
 
 | Feature | |
 |---|---|
-| **Fuzzy menu** — favorites (`*`), recently used (`~`), colored env tags, "time ago", and a live preview pane for the highlighted host. | ![fuzzy menu](demo/01-fuzzy-menu.png) |
+| **Fuzzy menu + arrow nav** — favorites (`*`), recently used (`~`), colored env tags, "time ago"; move with `↑`/`↓` and the live preview pane follows the highlighted host. | ![fuzzy menu](demo/01-fuzzy-menu.png) |
 | **Type to filter** — the list narrows instantly and the preview follows the highlight. | ![filter + preview](demo/02-filter-preview.png) |
 | **No-`fzf` fallback** — a clean numbered menu grouped by site, no extra tools required. | ![numeric menu](demo/03-numeric-menu.png) |
 | **Production guard** — any `PROD` host makes you type `YES` before it connects. | ![prod guard](demo/04-prod-guard.png) |
+| **Severity-colored tabs** — on WSL each environment opens its own Windows Terminal tab, tinted so the color signals severity at a glance (dev → prod = routine → danger). | ![tab severity](demo/05-tab-severity.png) |
 
 > **Want it to look exactly like the GIF and screenshots above?** They were
 > produced with **`fzf` installed** and the bundled, fully-fake
@@ -41,7 +46,8 @@ one fast when you have dozens. `ssh_menu` is the picker:
 - **Live preview pane** — highlight a host to see its user/port, dashboard
   URL, favorite status, last-used time, and total connect count.
 - **Colored terminal tabs** — on WSL, each environment opens in a Windows
-  Terminal tab tinted by site (dev green, qa amber, staging blue, prod red).
+  Terminal tab tinted by site so the color signals severity at a glance
+  (dev green → qa amber → staging blue → prod red).
 - **Open a dashboard** for the highlighted host with `Ctrl-O`.
 - **Production guard** — any `PROD` host makes you type `YES` before it
   connects.
