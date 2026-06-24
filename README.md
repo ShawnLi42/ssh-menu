@@ -116,6 +116,37 @@ copy `ssh_menu.conf.example` to `~/.ssh_menu.conf`.
 
 ---
 
+## Let your AI agent set it up
+
+Using **Claude Code**, **Codex**, **Cursor**, or any other terminal AI agent?
+Don't do it by hand — just ask. Paste a prompt like:
+
+> Install ssh_menu from https://github.com/ShawnLi42/ssh-menu: clone it, run
+> `install.sh`, and make sure `fzf` is installed. Then build my
+> `~/.ssh_menu.conf` from the hosts in my `~/.ssh/config` — group them by
+> environment (DEV/QA/STG/PROD), star the ones I use daily, and use the right
+> `user@host:port` for each. If I'm on WSL, confirm `wt.exe` is available so I
+> get the colored tabs.
+
+A capable agent can do the whole thing end to end:
+
+- clone the repo and run `install.sh` (symlink + dependency check),
+- install `fzf` for your platform,
+- **generate `~/.ssh_menu.conf` from your existing `~/.ssh/config`** (or from a
+  list of hosts/IPs you paste), grouped and starred,
+- adapt the site names, tag colors, tab colors, and dashboard URLs in
+  `ssh_menu.sh` to match *your* environments (the `case` statements in
+  `get_env_tag` / `site_color_for` / `tab_color_for` / `navigator_url_for`),
+- on WSL, verify Windows Terminal (`wt.exe`) is on `PATH` for the colored tabs.
+
+Everything it needs is in this repo and [Configuration](#configuration) below —
+the script is a single readable bash file, so the agent can tailor it safely.
+
+> ⚠️ Your `~/.ssh_menu.conf` holds real hostnames/IPs — keep it local. It's
+> already in `.gitignore`; never commit it or paste it into a public place.
+
+---
+
 ## Configuration
 
 One connection per line in `~/.ssh_menu.conf`:
