@@ -123,21 +123,34 @@ Don't do it by hand — just ask. Paste a prompt like:
 
 > Install ssh_menu from https://github.com/ShawnLi42/ssh-menu: clone it, run
 > `install.sh`, and make sure `fzf` is installed. Then build my
-> `~/.ssh_menu.conf` from the hosts in my `~/.ssh/config` — group them by
-> environment (DEV/QA/STG/PROD), star the ones I use daily, and use the right
-> `user@host:port` for each. If I'm on WSL, confirm `wt.exe` is available so I
-> get the colored tabs.
+> `~/.ssh_menu.conf` — group hosts by environment (DEV/QA/STG/PROD), star the
+> ones I use daily, and use the right `user@host:port` for each. If I'm on WSL,
+> confirm `wt.exe` is available so I get the colored tabs.
 
 A capable agent can do the whole thing end to end:
 
 - clone the repo and run `install.sh` (symlink + dependency check),
 - install `fzf` for your platform,
-- **generate `~/.ssh_menu.conf` from your existing `~/.ssh/config`** (or from a
-  list of hosts/IPs you paste), grouped and starred,
+- **generate `~/.ssh_menu.conf`** grouped and starred,
 - adapt the site names, tag colors, tab colors, and dashboard URLs in
   `ssh_menu.sh` to match *your* environments (the `case` statements in
   `get_env_tag` / `site_color_for` / `tab_color_for` / `navigator_url_for`),
 - on WSL, verify Windows Terminal (`wt.exe`) is on `PATH` for the colored tabs.
+
+### No `~/.ssh/config`? No problem
+
+The config is just a flat text file, so the agent can build it from whatever
+you *do* have — tell it which applies:
+
+- **Paste a list** of hosts/IPs (or a spreadsheet/CSV) right into the chat.
+- **Your shell history** — `grep -hE '\bssh ' ~/.bash_history ~/.zsh_history`
+  surfaces the boxes you actually connect to; the agent can dedupe those.
+- **`~/.ssh/known_hosts`** — the hosts you've connected to before.
+- **Your cloud inventory** — e.g. `aws ec2 describe-instances`,
+  `gcloud compute instances list`, `kubectl get nodes -o wide`, or a Terraform
+  state — the agent can turn the output into entries.
+- **Just dictate them** — "I've got web1/web2 in dev, an api box in qa, and a
+  prod gateway on port 2222" is enough for it to write the file.
 
 Everything it needs is in this repo and [Configuration](#configuration) below —
 the script is a single readable bash file, so the agent can tailor it safely.
