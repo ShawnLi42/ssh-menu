@@ -180,7 +180,7 @@ One connection per line in `~/.ssh_menu.conf`:
 NC D2 db:root@192.0.2.12:22
 NC Q3 arte01:root@198.51.100.30:22
 * CO D1 arte01:root@192.0.2.40:22
-COS prod gw:ops@203.0.113.5:2222
+COS Production gw:ops@203.0.113.5:2222
 ```
 
 ### Navigator links (`Ctrl-O`)

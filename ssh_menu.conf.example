@@ -11,7 +11,7 @@
 #     ssh_menu.sh).
 #   - host may be a raw IP (as below) OR a DNS name — whatever you'd hand to ssh.
 #   - '* ' marks a favorite: your daily boxes, surfaced first.
-#   - COS (production) entries ask for YES before connecting.
+#   - COS (the production site) entries ask for YES before connecting.
 #   - '#' and blank lines are ignored.
 #
 # ── Navigator links (^O in the menu) ──────────────────────────────────────
@@ -43,6 +43,7 @@ CO Q1 arte01:root@198.51.100.40:22
 WV dev web:root@192.0.2.70:22
 WV qa app:root@198.51.100.70:22
 
-# ── COS (production — guarded, asks for YES) ──────────────────────────────
-COS prod gw:ops@203.0.113.5:2222
-COS prod arte01:ops@203.0.113.10:22
+# ── COS  (Colorado production site — guarded, asks for YES) ───────────────
+COS Production gw:ops@203.0.113.5:2222
+COS arte03:ops@203.0.113.10:22
+COS arte04:ops@203.0.113.11:22
