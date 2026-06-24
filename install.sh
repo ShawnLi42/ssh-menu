@@ -84,4 +84,5 @@ fi
 
 say ""
 ok "Done. Run ${CYAN}ssh_menu.sh${NC} to start (or ${CYAN}$LINK${NC} if PATH isn't set up yet)."
-warn "Before connecting, configure your hosts in ${CYAN}$CONF${NC} — see ${CYAN}$EXAMPLE${NC} for the format."
+warn "Edit your hosts in ${CYAN}$CONF${NC} — this is the ONLY file the menu reads."
+say  "  ${DIM}(Editing $EXAMPLE or any ssh_menu.conf in the repo does nothing — they're just templates.)${NC}"

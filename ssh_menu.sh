@@ -401,6 +401,7 @@ print_header() {
     echo "${BLUE}================================${NC}"
     echo "${CYAN}         SSH CONNECTION MENU         ${NC}"
     echo "${BLUE}================================${NC}"
+    echo "${DIM}config: ${CONFIG_FILE/#$HOME/~}${NC}"
     echo ""
 }
 
@@ -516,7 +517,7 @@ while true; do
     if command -v fzf >/dev/null 2>&1; then
         selected=$("$SCRIPT_PATH" --gen-lines | fzf \
             --ansi \
-            --prompt='SSH > ' \
+            --prompt="SSH ${CONFIG_FILE/#$HOME/~} > " \
             --height=90% \
             --reverse \
             --header='filter / f=toggle fav / ^O=open navigator / Enter=ssh / Esc=exit menu' \

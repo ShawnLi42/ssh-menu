@@ -163,6 +163,11 @@ the script is a single readable bash file, so the agent can tailor it safely.
 
 ## Configuration
 
+> ⚠️ **The menu reads only `~/.ssh_menu.conf`** (or `$SSH_MENU_CONF` if set).
+> Editing `ssh_menu.conf.example` or any `ssh_menu.conf` inside the repo does
+> **nothing** — those are templates. The running menu prints its active config
+> path in the prompt/header, so you can always see which file is live.
+
 One connection per line in `~/.ssh_menu.conf`:
 
 ```

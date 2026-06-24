@@ -1,6 +1,8 @@
 # Local user state — never commit real hosts or connection history.
 .ssh_menu.conf
 .ssh_menu.history
+# a config placed in the repo dir (e.g. via the SSH_MENU_CONF override)
+/ssh_menu.conf
 
 # Recording scratch
 *.cast
