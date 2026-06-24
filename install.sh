@@ -84,3 +84,4 @@ fi
 
 say ""
 ok "Done. Run ${CYAN}ssh_menu.sh${NC} to start (or ${CYAN}$LINK${NC} if PATH isn't set up yet)."
+warn "Before connecting, configure your hosts in ${CYAN}$CONF${NC} — see ${CYAN}$EXAMPLE${NC} for the format."
