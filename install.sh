@@ -17,7 +17,7 @@ SRC_DIR=$(cd "$(dirname "$0")" && pwd)
 SCRIPT="$SRC_DIR/ssh_menu.sh"
 EXAMPLE="$SRC_DIR/ssh_menu.conf.example"
 BIN_DIR="${BIN_DIR:-$HOME/.local/bin}"
-LINK="$BIN_DIR/ssh_menu"
+LINK="$BIN_DIR/ssh_menu.sh"
 CONF="${SSH_MENU_CONF:-$HOME/.ssh_menu.conf}"
 
 say()  { printf '%s\n' "$*"; }
@@ -83,4 +83,4 @@ else
 fi
 
 say ""
-ok "Done. Run ${CYAN}ssh_menu${NC} to start (or ${CYAN}$LINK${NC} if PATH isn't set up yet)."
+ok "Done. Run ${CYAN}ssh_menu.sh${NC} to start (or ${CYAN}$LINK${NC} if PATH isn't set up yet)."
