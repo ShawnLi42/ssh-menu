@@ -38,10 +38,12 @@ NC Q3 con:root@198.51.100.31:22
 # ── CO ────────────────────────────────────────────────────────────────────
 * CO D1 arte01:root@192.0.2.40:22
 CO Q1 arte01:root@198.51.100.40:22
+CO CAT1 arte01:root@203.0.113.40:22
 
 # ── WV ────────────────────────────────────────────────────────────────────
 WV dev web:root@192.0.2.70:22
 WV qa app:root@198.51.100.70:22
+WV CAT1 app:root@203.0.113.70:22
 
 # ── COS  (Colorado production site — guarded, asks for YES) ───────────────
 COS Production gw:ops@203.0.113.5:2222

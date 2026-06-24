@@ -217,7 +217,7 @@ statements near the top of `ssh_menu.sh`:
 
 | Function | Controls |
 |----------|----------|
-| `get_env_tag` | the `[dev]` / `[qa]` / `[int]` / `[PROD]` tag + color |
+| `get_env_tag` | the `[gw]` / `[dev]` / `[int]` / `[qa]` / `[cat]` / `[PROD]` tag + color |
 | `site_color_for` | the group header color in the numeric menu |
 | `tab_color_for` | the Windows Terminal tab color (and whether a tab opens at all) |
 

@@ -51,9 +51,11 @@ HISTORY_FILE="${SSH_MENU_HISTORY:-$HOME/.ssh_menu.history}"
 
 get_env_tag() {
     case "$1" in
+        *" GW"*|*" gw"*|*[Gg]ateway*)       printf ' %s[gw]%s'   "$CYAN"   "$NC" ;;
         "NC D2"*|"CO D"[12]*|"WV dev"*)     printf ' %s[dev]%s'  "$GREEN"  "$NC" ;;
         "NC I2"*)                           printf ' %s[int]%s'  "$BLUE"   "$NC" ;;
         "NC Q2"*|"NC Q3"*|"CO Q"*|"WV qa"*) printf ' %s[qa]%s'   "$YELLOW" "$NC" ;;
+        "NC CAT"*|"CO CAT"*|"WV CAT"*)      printf ' %s[cat]%s'  "$PURPLE" "$NC" ;;
         "COS"*)                             printf ' %s[PROD]%s' "$RED"    "$NC" ;;
     esac
 }
@@ -70,9 +72,11 @@ site_color_for() {
 
 tab_color_for() {
     case "$1" in
+        *" GW"*|*" gw"*|*[Gg]ateway*)       printf '#00B7C3' ;;
         "NC D2"*|"CO D"[12]*|"WV dev"*)     printf '#00CC44' ;;
         "NC I2"*)                           printf '#3399FF' ;;
         "NC Q2"*|"NC Q3"*|"CO Q"*|"WV qa"*) printf '#DDAA00' ;;
+        "NC CAT"*|"CO CAT"*|"WV CAT"*)      printf '#AA55CC' ;;
         "COS"*)                             printf '#FF3344' ;;
     esac
 }
