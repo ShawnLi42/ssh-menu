@@ -7,6 +7,14 @@ Fuzzy-search by name, your favorites and most-recently-used hosts float to the
 top, and a single keypress connects — on WSL, in its own color-coded Windows
 Terminal tab. One bash script, one plain text file, no daemon.
 
+> 💡 **Best experience: Windows + WSL with [Windows Terminal](https://aka.ms/terminal).**
+> That combo unlocks the headline feature — every connection opens in its **own
+> tab, color-coded by environment** (dev 🟢 → qa 🟡 → staging 🔵 → prod 🔴) via
+> `wt.exe --tabColor`, so you can tell at a glance which environment each tab is
+> on. `ssh_menu` runs fine on plain Linux/macOS too (fuzzy menu, favorites,
+> recency, preview, prod guard) — you just don't get the colored tabs, since
+> that depends on Windows Terminal.
+
 ![ssh_menu demo](demo/demo.gif)
 
 *Real recording in WSL: arrow through hosts (the preview pane follows each
@@ -68,7 +76,7 @@ one fast when you have dozens. `ssh_menu` is the picker:
 |------|---------|-----------|
 | `bash`, `ssh`, coreutils (`sed`, `sort`, `cut`, `mktemp`, `date`) | core | **Required** (present on virtually every system) |
 | [`fzf`](https://github.com/junegunn/fzf) | the fuzzy UI + preview pane | **Optional but recommended** — falls back to a numeric menu without it |
-| `wt.exe` (Windows Terminal) | colored connection tabs on WSL | Optional (WSL only) |
+| `wt.exe` ([Windows Terminal](https://aka.ms/terminal)) | the per-environment **colored connection tabs** | **Strongly recommended on WSL** — this is what enables the colored tabs |
 | `wslview` / `explorer.exe` / `xdg-open` | the `Ctrl-O` "open dashboard" action | Optional |
 
 Install `fzf`:
