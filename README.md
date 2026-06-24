@@ -29,7 +29,7 @@ it isn't in the recording, but you'll see it the moment you connect.*
 | **Fuzzy menu + arrow nav** — favorites (`*`), recently used (`~`), colored env tags, "time ago"; move with `↑`/`↓` and the live preview pane follows the highlighted host. | ![fuzzy menu](demo/01-fuzzy-menu.png) |
 | **Type to filter** — the list narrows instantly and the preview follows the highlight. | ![filter + preview](demo/02-filter-preview.png) |
 | **No-`fzf` fallback** — a clean numbered menu grouped by site, no extra tools required. | ![numeric menu](demo/03-numeric-menu.png) |
-| **Production guard** — any `PROD` host makes you type `YES` before it connects. | ![prod guard](demo/04-prod-guard.png) |
+| **Production guard** — any production (`COS`/`PROD`) host makes you type `YES` before it connects. | ![prod guard](demo/04-prod-guard.png) |
 | **Color-coded tabs** — on WSL, connecting opens a Windows Terminal tab tinted by environment (via `wt --tabColor`), so severity reads at a glance. These are the actual colors the tool assigns: | ![tab colors](demo/05-tab-colors.png) |
 
 > Shots 1–2 are real `fzf` frames captured in WSL; shots 3–4 are real output
@@ -57,14 +57,14 @@ one fast when you have dozens. `ssh_menu` is the picker:
 - **Recency-aware** — the 5 hosts you used most recently sort to the top,
   each annotated with `3m ago` / `2h ago` / `4d ago`.
 - **Favorites** — star the hosts you hit daily; toggle a star live with `f`.
-- **Live preview pane** — highlight a host to see its user/port, dashboard
+- **Live preview pane** — highlight a host to see its user/port, Navigator
   URL, favorite status, last-used time, and total connect count.
 - **Colored terminal tabs** — on WSL, each environment opens in a Windows
   Terminal tab tinted by site so the color signals severity at a glance
   (dev green → qa amber → prod red).
-- **Open a dashboard** for the highlighted host with `Ctrl-O`.
-- **Production guard** — any `PROD` host makes you type `YES` before it
-  connects.
+- **Open the Navigator** for the highlighted host with `Ctrl-O`.
+- **Production guard** — any production (`COS`/`PROD`) host makes you type
+  `YES` before it connects.
 - **Graceful fallback** — no `fzf`? You get a clean numbered menu grouped by
   site instead. Nothing else is required.
 
@@ -77,7 +77,7 @@ one fast when you have dozens. `ssh_menu` is the picker:
 | `bash`, `ssh`, coreutils (`sed`, `sort`, `cut`, `mktemp`, `date`) | core | **Required** (present on virtually every system) |
 | [`fzf`](https://github.com/junegunn/fzf) | the fuzzy UI + preview pane | **Optional but recommended** — falls back to a numeric menu without it |
 | `wt.exe` ([Windows Terminal](https://aka.ms/terminal)) | the per-environment **colored connection tabs** | **Strongly recommended on WSL** — this is what enables the colored tabs |
-| `wslview` / `explorer.exe` / `xdg-open` | the `Ctrl-O` "open dashboard" action | Optional |
+| `wslview` / `explorer.exe` / `xdg-open` | the `Ctrl-O` "open Navigator" action | Optional |
 
 Install `fzf`:
 
@@ -131,10 +131,11 @@ A capable agent can do the whole thing end to end:
 
 - clone the repo and run `install.sh` (symlink + dependency check),
 - install `fzf` for your platform,
-- **generate `~/.ssh_menu.conf`** grouped and starred,
-- adapt the site names, tag colors, tab colors, and dashboard URLs in
-  `ssh_menu.sh` to match *your* environments (the `case` statements in
-  `get_env_tag` / `site_color_for` / `tab_color_for` / `navigator_url_for`),
+- **generate `~/.ssh_menu.conf`** grouped and starred, including the
+  `nav <prefix> <url>` Navigator lines,
+- adapt the site names, tag colors, and tab colors in `ssh_menu.sh` to match
+  *your* environments (the `case` statements in `get_env_tag` /
+  `site_color_for` / `tab_color_for`),
 - on WSL, verify Windows Terminal (`wt.exe`) is on `PATH` for the colored tabs.
 
 ### No `~/.ssh/config`? No problem
@@ -168,32 +169,56 @@ One connection per line in `~/.ssh_menu.conf`:
 [* ]Name:user@host:port
 ```
 
-- The **first word of `Name`** is the *site* (e.g. `DEV`, `QA`, `PROD`)
-  and drives the colored tag, group color, tab color, and dashboard URL.
+- The **leading word(s) of `Name`** are the *site/env* (e.g. `NC D2`, `CO Q1`,
+  `COS`) and drive the colored tag, group color, and tab color.
 - A leading **`* `** marks the entry a **favorite**.
+- `host` may be a raw IP or a DNS name — whatever you'd hand to `ssh`.
 - Lines starting with `#` and blank lines are ignored.
 
 ```ini
-* DEV web1:deploy@web1.dev.example.com:22
-DEV db:deploy@db.dev.example.com:22
-QA api:qa@api.qa.example.com:22
-* PROD gateway:ops@gateway.prod.example.com:2222
+* NC D2 arte01:root@192.0.2.10:22
+NC D2 db:root@192.0.2.12:22
+NC Q3 arte01:root@198.51.100.30:22
+* CO D1 arte01:root@192.0.2.40:22
+COS prod gw:ops@203.0.113.5:2222
 ```
+
+### Navigator links (`Ctrl-O`)
+
+Any host can open a web **Navigator** in your browser with `Ctrl-O`. The URLs
+live right in `~/.ssh_menu.conf` as `nav` lines, so you never touch the script:
+
+```ini
+nav <name-prefix>  <url>
+```
+
+- Put `nav` lines anywhere in the file (the top is tidiest).
+- A host is matched to a URL by the **longest** name-prefix, so one line can
+  cover a whole environment — and a longer prefix overrides it for a subset:
+
+```ini
+nav NC D2     https://ncl-d2-navigator.dev.lottery-solutions.net/navigator/   # every NC D2 host
+nav NC Q3     https://ncl-q3-navigator.dev.lottery-solutions.net/navigator/   # every NC Q3 host
+nav NC D2 db  https://ncl-d2-navigator.dev.lottery-solutions.net/db/          # overrides just NC D2 db
+```
+
+- No matching `nav` line → `Ctrl-O` does nothing for that host (e.g. leave
+  production without one).
 
 ### Adapting it to your environments
 
-The site names, colors, dashboard URLs, and which sites get a colored tab are
-plain `case` statements near the top of `ssh_menu.sh`:
+The site names, colors, and which sites get a colored tab are plain `case`
+statements near the top of `ssh_menu.sh`:
 
 | Function | Controls |
 |----------|----------|
-| `get_env_tag` | the `[dev]` / `[qa]` / `[PROD]` tag + color |
+| `get_env_tag` | the `[dev]` / `[qa]` / `[int]` / `[PROD]` tag + color |
 | `site_color_for` | the group header color in the numeric menu |
 | `tab_color_for` | the Windows Terminal tab color (and whether a tab opens at all) |
-| `navigator_url_for` | the dashboard URL opened with `Ctrl-O` |
 
-Edit those to match your own naming. The `PROD` confirmation guard is in the
-main loop (`case "$name" in "PROD"*) ...`).
+Edit those to match your own naming. (Navigator URLs are **not** here — they
+live in the config as `nav` lines; see above.) The production confirmation
+guard is in the main loop (`case "$name" in "COS"*|"PROD"*) ...`).
 
 ### Environment overrides
 
@@ -213,7 +238,7 @@ main loop (`case "$name" in "PROD"*) ...`).
 | `↑` / `↓` | move |
 | `Enter` | connect |
 | `f` | toggle favorite (rewrites the config and reloads) |
-| `Ctrl-O` | open the highlighted host's dashboard URL |
+| `Ctrl-O` | open the highlighted host's Navigator URL |
 | `Esc` | exit the menu |
 
 Markers in the list: `*` (yellow) favorite · `~` (cyan) recently used · blank

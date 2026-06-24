@@ -1,22 +1,48 @@
-# ssh_menu config — copy to ~/.ssh_menu.conf and edit for your hosts.
+# ssh_menu connections — TEMPLATE ONLY.  (IPs below are fake — RFC 5737 docs range.)
 #
-# Format:   [* ]Name:user@host:port
-#   - Name's FIRST word is the "site" (DEV / QA / PROD here) and drives
-#     the colored tag, group color, terminal-tab color, and dashboard URL.
-#     Add your own sites by editing the case statements in ssh_menu.sh.
-#   - A leading '* ' marks the entry as a favorite (shown first, daily picks).
-#   - Lines starting with '#' and blank lines are ignored.
-#   - PROD entries require typing YES before connecting.
+# The menu reads ~/.ssh_menu.conf, NOT this file. Copy it once, then edit the copy:
+#     cp ssh_menu.conf.example ~/.ssh_menu.conf
+#     vi ~/.ssh_menu.conf
+#
+# ── Host lines ────────────────────────────────────────────────────────────
+#   [* ]Name:user@host:port
+#   - Name's leading words are the site/env (NC D2, CO Q1, COS …); they drive
+#     the colored tag, group color and terminal-tab color (case statements in
+#     ssh_menu.sh).
+#   - host may be a raw IP (as below) OR a DNS name — whatever you'd hand to ssh.
+#   - '* ' marks a favorite: your daily boxes, surfaced first.
+#   - COS (production) entries ask for YES before connecting.
+#   - '#' and blank lines are ignored.
+#
+# ── Navigator links (^O in the menu) ──────────────────────────────────────
+#   nav <name-prefix> <url>
+#   - Opens a web Navigator for the highlighted host with ^O.
+#   - Matched by LONGEST name-prefix: "nav NC D2" covers every NC D2 host; a
+#     more specific "nav NC D2 db <url>" would override just that one host.
+#   - Edit these here in the config — no need to touch ssh_menu.sh.
+nav NC D2  https://ncl-d2-navigator.dev.lottery-solutions.net/navigator/
+nav NC I2  https://ncl-i2-navigator.dev.lottery-solutions.net/navigator/
+nav NC Q2  https://ncl-q2-navigator.dev.lottery-solutions.net/navigator/
+nav NC Q3  https://ncl-q3-navigator.dev.lottery-solutions.net/navigator/
+# (CO / WV / COS have no Navigator, so ^O does nothing for those hosts)
 
-# ── DEV ──────────────────────────────────────────────────────────────────
-* DEV web1:deploy@web1.dev.example.com:22
-* DEV api:deploy@api.dev.example.com:22
-DEV db:deploy@db.dev.example.com:22
+# ── NC ────────────────────────────────────────────────────────────────────
+* NC D2 arte01:root@192.0.2.10:22
+NC D2 con:root@192.0.2.11:22
+NC D2 db:root@192.0.2.12:22
+NC I2 arte01:root@192.0.2.30:22
+NC Q2 arte01:root@198.51.100.20:22
+* NC Q3 arte01:root@198.51.100.30:22
+NC Q3 con:root@198.51.100.31:22
 
-# ── QA ───────────────────────────────────────────────────────────────────
-QA web1:qa@web1.qa.example.com:22
-QA api:qa@api.qa.example.com:22
-QA db:qa@db.qa.example.com:22
+# ── CO ────────────────────────────────────────────────────────────────────
+* CO D1 arte01:root@192.0.2.40:22
+CO Q1 arte01:root@198.51.100.40:22
 
-# ── PROD (guarded — asks for YES) ────────────────────────────────────────
-* PROD gateway:ops@gateway.prod.example.com:2222
+# ── WV ────────────────────────────────────────────────────────────────────
+WV dev web:root@192.0.2.70:22
+WV qa app:root@198.51.100.70:22
+
+# ── COS (production — guarded, asks for YES) ──────────────────────────────
+COS prod gw:ops@203.0.113.5:2222
+COS prod arte01:ops@203.0.113.10:22

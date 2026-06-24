@@ -20,10 +20,11 @@
 # Numeric flow: favorites preamble (1..N), 'a' switches to full grouped menu,
 #               each favorite row shows last-used timestamp if available.
 #
-# The site groups (DEV / QA / PROD), their colors, the dashboard URLs,
-# and the colored-tab behavior below are EXAMPLES. Edit the case statements in
-# get_env_tag / site_color_for / tab_color_for / navigator_url_for to match
-# your own environments. PROD entries require typing YES before connecting.
+# The site groups (NC / CO / WV / COS), their colors and the colored-tab
+# behavior below are EXAMPLES. Edit the case statements in get_env_tag /
+# site_color_for / tab_color_for to match your own environments. Navigator URLs
+# are NOT hardcoded here — they come from the config as "nav <prefix> <url>"
+# lines (see ssh_menu.conf.example). COS (production) entries require YES first.
 
 # ── Colors ────────────────────────────────────────────────────────────────
 RED=$'\033[0;31m'
@@ -42,43 +43,62 @@ HISTORY_FILE="${SSH_MENU_HISTORY:-$HOME/.ssh_menu.history}"
 # ──────────────────────────────────────────────────────────────────────────
 # Helpers — environment / colors
 #
-# These map an entry's leading site word (the part before the first space) to
-# a colored tag, a site color, a terminal-tab color, and an optional dashboard
-# URL. They are intentionally simple case statements — add your own sites here.
+# get_env_tag and tab_color_for match an entry by NAME PREFIX (e.g. "NC D2");
+# site_color_for keys off the leading site word (e.g. "NC"). Simple case
+# statements — add your own sites here. Navigator URLs are NOT here; they live
+# in the config as "nav <prefix> <url>" lines.
 # ──────────────────────────────────────────────────────────────────────────
 
 get_env_tag() {
     case "$1" in
-        "DEV "*)   printf ' %s[dev]%s'  "$GREEN"  "$NC" ;;
-        "QA "*)    printf ' %s[qa]%s'   "$YELLOW" "$NC" ;;
-        "PROD "*)  printf ' %s[PROD]%s' "$RED"    "$NC" ;;
+        "NC D2"*|"CO D"[12]*|"WV dev"*)     printf ' %s[dev]%s'  "$GREEN"  "$NC" ;;
+        "NC I2"*)                           printf ' %s[int]%s'  "$BLUE"   "$NC" ;;
+        "NC Q2"*|"NC Q3"*|"CO Q"*|"WV qa"*) printf ' %s[qa]%s'   "$YELLOW" "$NC" ;;
+        "COS"*)                             printf ' %s[PROD]%s' "$RED"    "$NC" ;;
     esac
 }
 
 site_color_for() {
     case "$1" in
-        DEV)  printf '%s' "$GREEN"  ;;
-        QA)   printf '%s' "$YELLOW" ;;
-        PROD) printf '%s' "$PURPLE" ;;
+        NC)   printf '%s' "$GREEN"  ;;
+        CO)   printf '%s' "$CYAN"   ;;
+        WV)   printf '%s' "$BLUE"   ;;
+        COS)  printf '%s' "$PURPLE" ;;
         *)    printf '%s' "$WHITE"  ;;
     esac
 }
 
 tab_color_for() {
     case "$1" in
-        "DEV "*)   printf '#00CC44' ;;
-        "QA "*)    printf '#DDAA00' ;;
-        "PROD "*)  printf '#FF3344' ;;
+        "NC D2"*|"CO D"[12]*|"WV dev"*)     printf '#00CC44' ;;
+        "NC I2"*)                           printf '#3399FF' ;;
+        "NC Q2"*|"NC Q3"*|"CO Q"*|"WV qa"*) printf '#DDAA00' ;;
+        "COS"*)                             printf '#FF3344' ;;
     esac
 }
 
-# Map an entry to a web dashboard URL (opened with the ^O bind in fzf mode).
-# Returns nothing for entries without a dashboard (e.g. PROD).
+# Map an entry to its Navigator URL (opened with the ^O bind in fzf mode).
+# URLs are defined in the config as "nav <name-prefix> <url>" lines; the entry
+# name is matched against them and the LONGEST matching prefix wins. Prints
+# nothing when no prefix matches (so ^O does nothing for that host).
 navigator_url_for() {
-    case "$1" in
-        "DEV "*) printf 'https://navigator.example.com/dev/' ;;
-        "QA "*)  printf 'https://navigator.example.com/qa/' ;;
-    esac
+    local name="$1" line rest url prefix best_prefix="" best_url=""
+    [[ -f "$CONFIG_FILE" ]] || return 0
+    while IFS= read -r line; do
+        line="${line#"${line%%[![:space:]]*}"}"          # ltrim
+        [[ "$line" == "nav "* ]] || continue
+        rest="${line#nav }"
+        rest="${rest#"${rest%%[![:space:]]*}"}"           # ltrim after 'nav '
+        url="${rest##* }"                                  # last whitespace token
+        prefix="${rest% *}"                                # everything before it
+        prefix="${prefix%"${prefix##*[![:space:]]}"}"      # rtrim
+        [[ -z "$prefix" || -z "$url" || "$prefix" == "$rest" ]] && continue
+        if [[ "$name" == "$prefix" || "$name" == "$prefix "* ]] \
+           && (( ${#prefix} >= ${#best_prefix} )); then
+            best_prefix="$prefix"; best_url="$url"
+        fi
+    done < "$CONFIG_FILE"
+    [[ -n "$best_url" ]] && printf '%s' "$best_url"
 }
 
 # Open a URL in the host's default browser. Prefers wslview (WSL), falls back
@@ -130,6 +150,7 @@ _load_connections() {
     while IFS= read -r line; do
         line="${line#"${line%%[![:space:]]*}"}"
         [[ -z "$line" || "${line:0:1}" == "#" ]] && continue
+        [[ "$line" == "nav "* ]] && continue   # Navigator directive, not a host entry
         line="${line%"${line##*[![:space:]]}"}"
         fav=""
         if [[ "${line:0:2}" == "* " ]]; then
@@ -273,7 +294,7 @@ _toggle_fav_by_name() {
     local toggled=0 line trimmed body was_fav name
     while IFS= read -r line || [[ -n "$line" ]]; do
         trimmed="${line#"${line%%[![:space:]]*}"}"
-        if [[ -z "$trimmed" || "${trimmed:0:1}" == "#" ]]; then
+        if [[ -z "$trimmed" || "${trimmed:0:1}" == "#" || "$trimmed" == "nav "* ]]; then
             printf '%s\n' "$line" >> "$tmpfile"
             continue
         fi
@@ -366,7 +387,7 @@ _preview_for_line() {
     printf '  %s%s%s\n' "$(site_color_for "$site")" "$name" "$NC"
     printf '    host:        %s   port: %s\n' "$host" "$port"
     if [[ -n "$nav_url" ]]; then
-        printf '    dashboard:   %s%s%s\n' "$CYAN" "$nav_url" "$NC"
+        printf '    navigator:   %s%s%s\n' "$CYAN" "$nav_url" "$NC"
     fi
     printf '    status:      %s        last used: %s   times: %s\n' "$fav_str" "$last_str" "$times"
     printf '    site/tab:    %s / %s\n' "$site" "$tab"
@@ -498,7 +519,7 @@ while true; do
             --prompt='SSH > ' \
             --height=90% \
             --reverse \
-            --header='filter / f=toggle fav / ^O=open dashboard / Enter=ssh / Esc=exit menu' \
+            --header='filter / f=toggle fav / ^O=open navigator / Enter=ssh / Esc=exit menu' \
             --preview "$SCRIPT_PATH --preview-line {}" \
             --preview-window=down:6:wrap \
             --bind "f:execute-silent($SCRIPT_PATH --toggle-fav {})+reload($SCRIPT_PATH --gen-lines)" \
@@ -571,7 +592,7 @@ while true; do
     port=$(printf '%s' "$connection" | cut -d':' -f3)
 
     case "$name" in
-        "PROD"*)
+        "COS"*|"PROD"*)
             echo "${RED}!! PRODUCTION HOST: ${YELLOW}$name${NC}"
             printf '%sType YES to confirm: %s' "$RED" "$NC"
             read -r confirm
