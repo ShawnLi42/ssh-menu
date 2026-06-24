@@ -20,7 +20,7 @@
 # Numeric flow: favorites preamble (1..N), 'a' switches to full grouped menu,
 #               each favorite row shows last-used timestamp if available.
 #
-# The site groups (DEV / QA / STG / PROD), their colors, the dashboard URLs,
+# The site groups (DEV / QA / PROD), their colors, the dashboard URLs,
 # and the colored-tab behavior below are EXAMPLES. Edit the case statements in
 # get_env_tag / site_color_for / tab_color_for / navigator_url_for to match
 # your own environments. PROD entries require typing YES before connecting.
@@ -49,17 +49,15 @@ HISTORY_FILE="${SSH_MENU_HISTORY:-$HOME/.ssh_menu.history}"
 
 get_env_tag() {
     case "$1" in
-        "DEV "*)   printf ' %s[dev]%s'     "$GREEN"  "$NC" ;;
-        "QA "*)    printf ' %s[qa]%s'      "$YELLOW" "$NC" ;;
-        "STG "*)   printf ' %s[staging]%s' "$BLUE"   "$NC" ;;
-        "PROD "*)  printf ' %s[PROD]%s'    "$RED"    "$NC" ;;
+        "DEV "*)   printf ' %s[dev]%s'  "$GREEN"  "$NC" ;;
+        "QA "*)    printf ' %s[qa]%s'   "$YELLOW" "$NC" ;;
+        "PROD "*)  printf ' %s[PROD]%s' "$RED"    "$NC" ;;
     esac
 }
 
 site_color_for() {
     case "$1" in
         DEV)  printf '%s' "$GREEN"  ;;
-        STG)  printf '%s' "$CYAN"   ;;
         QA)   printf '%s' "$YELLOW" ;;
         PROD) printf '%s' "$PURPLE" ;;
         *)    printf '%s' "$WHITE"  ;;
@@ -70,7 +68,6 @@ tab_color_for() {
     case "$1" in
         "DEV "*)   printf '#00CC44' ;;
         "QA "*)    printf '#DDAA00' ;;
-        "STG "*)   printf '#00AAFF' ;;
         "PROD "*)  printf '#FF3344' ;;
     esac
 }
@@ -81,7 +78,6 @@ navigator_url_for() {
     case "$1" in
         "DEV "*) printf 'https://navigator.example.com/dev/' ;;
         "QA "*)  printf 'https://navigator.example.com/qa/' ;;
-        "STG "*) printf 'https://navigator.example.com/staging/' ;;
     esac
 }
 

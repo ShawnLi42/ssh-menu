@@ -9,7 +9,7 @@ Terminal tab. One bash script, one plain text file, no daemon.
 
 > 💡 **Best experience: Windows + WSL with [Windows Terminal](https://aka.ms/terminal).**
 > That combo unlocks the headline feature — every connection opens in its **own
-> tab, color-coded by environment** (dev 🟢 → qa 🟡 → staging 🔵 → prod 🔴) via
+> tab, color-coded by environment** (dev 🟢 → qa 🟡 → prod 🔴) via
 > `wt.exe --tabColor`, so you can tell at a glance which environment each tab is
 > on. `ssh_menu` runs fine on plain Linux/macOS too (fuzzy menu, favorites,
 > recency, preview, prod guard) — you just don't get the colored tabs, since
@@ -41,7 +41,7 @@ it isn't in the recording, but you'll see it the moment you connect.*
 > one-line install per platform.
 >
 > On WSL, connecting opens a Windows Terminal tab color-coded by environment
-> (dev green → qa amber → staging blue → prod red). That tab bar is a Windows
+> (dev green → qa amber → prod red). That tab bar is a Windows
 > GUI element, so it isn't shown here — but you'll see it the moment you
 > connect.
 
@@ -61,7 +61,7 @@ one fast when you have dozens. `ssh_menu` is the picker:
   URL, favorite status, last-used time, and total connect count.
 - **Colored terminal tabs** — on WSL, each environment opens in a Windows
   Terminal tab tinted by site so the color signals severity at a glance
-  (dev green → qa amber → staging blue → prod red).
+  (dev green → qa amber → prod red).
 - **Open a dashboard** for the highlighted host with `Ctrl-O`.
 - **Production guard** — any `PROD` host makes you type `YES` before it
   connects.
@@ -123,7 +123,7 @@ Don't do it by hand — just ask. Paste a prompt like:
 
 > Install ssh_menu from https://github.com/ShawnLi42/ssh-menu: clone it, run
 > `install.sh`, and make sure `fzf` is installed. Then build my
-> `~/.ssh_menu.conf` — group hosts by environment (DEV/QA/STG/PROD), star the
+> `~/.ssh_menu.conf` — group hosts by environment (DEV/QA/PROD), star the
 > ones I use daily, and use the right `user@host:port` for each. If I'm on WSL,
 > confirm `wt.exe` is available so I get the colored tabs.
 
@@ -168,7 +168,7 @@ One connection per line in `~/.ssh_menu.conf`:
 [* ]Name:user@host:port
 ```
 
-- The **first word of `Name`** is the *site* (e.g. `DEV`, `QA`, `STG`, `PROD`)
+- The **first word of `Name`** is the *site* (e.g. `DEV`, `QA`, `PROD`)
   and drives the colored tag, group color, tab color, and dashboard URL.
 - A leading **`* `** marks the entry a **favorite**.
 - Lines starting with `#` and blank lines are ignored.
@@ -187,7 +187,7 @@ plain `case` statements near the top of `ssh_menu.sh`:
 
 | Function | Controls |
 |----------|----------|
-| `get_env_tag` | the `[dev]` / `[qa]` / `[staging]` / `[PROD]` tag + color |
+| `get_env_tag` | the `[dev]` / `[qa]` / `[PROD]` tag + color |
 | `site_color_for` | the group header color in the numeric menu |
 | `tab_color_for` | the Windows Terminal tab color (and whether a tab opens at all) |
 | `navigator_url_for` | the dashboard URL opened with `Ctrl-O` |
